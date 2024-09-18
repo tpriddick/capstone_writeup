@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.55">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Predicting Stock Market Movements through Social Media Sentiment Analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Predicting Stock Market Movements through Social Media Sentiment Analysis</h1>
+            <p class="subtitle lead">A Data-Driven Approach to Understanding Public Perception and Financial Markets</p>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Authors</div>
+      <div class="quarto-title-meta-contents">
+               <p>Aryan Bhardwaj </p>
+               <p>Tyler Gomez Riddick </p>
+            </div>
+    </div>
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>In the ever dynamic finance world, traditional methods of analyzing stock market movements are being supplemented by approaches that leverage the vast amount of data available on the internet. One such approach is the analysis of social media sentiment to predict stock market trends. This project aims to utilize the social media posts, specifically those on the X (formerly Twitter) and Reddit platforms, to gain insights into public sentiment and its potential impact on stock prices.</p>
+<p>Social media platforms have become significant discourse centers where individuals express their opinions, sentiments, and reactions to various events, including financial markets. The volume of data generated on these platforms provide a unique opportunity to capture real-time public sentiment. By analyzing tweets and correlating them with historical financial data from Yahoo Finance, this project seeks to develop a predictive model that can offer insights into stock market movements.</p>
+<p>The project involves several key steps:</p>
+<p>Data Collection: Gathering financial data from Yahoo Finance and social media data from X and Reddit posts related to specific stock entities.</p>
+<p>Sentiment Analysis: Using natural language processing (NLP) techniques to analyze the sentiment of the collected tweets, categorizing them as positive, negative, or neutral, and aggregating each day’s sentiment into a single score.</p>
+<p>Data Integration: Connecting the aggregated sentiment scores with historical stock prices to identify patterns and relationships.</p>
+<p>Predictive Modeling: Developing machine learning models to predict future stock price movements based on the analyzed sentiment data.</p>
+<p>Evaluation and Validation: Testing the model’s accuracy and reliability using historical data and refining it to improve performance.</p>
+<p>By integrating social media sentiment with traditional financial analysis, this project aims to provide a more comprehensive and timely understanding of stock market dynamics. The outcome could potentially aid investors and financial analysts in making more informed decisions, leveraging the collective sentiment expressed on social media as an additional indicator of market trends.</p>
+</section>
+<section id="background" class="level1">
+<h1>Background</h1>
+<p>The financial markets have always been influenced by public sentiment, with news, rumors, and opinions shaping the decisions of investors and traders. Traditionally, analysts relied on financial statements, market indicators, and economic reports to gauge market trends. However, the internet and social media have transformed the landscape, providing a new dimension of real-time data. Platforms like Twitter/X and Reddit have become influential platforms where people share their views on market conditions and specific stocks, as well as their views on the companies themselves.</p>
+<p>The concept of using social media sentiment as a predictive tool for financial markets has gained traction in recent years, supported by growth in natural language processing (NLP) in machine learning. Studies have shown that there could be a significant correlation between social media sentiment and stock market movements, making it a valuable resource for predicting short-term market trends <span class="citation" data-cites="financialtimes">[<a href="#ref-financialtimes" role="doc-biblioref">1</a>]</span>. This project builds on this emerging field by developing a model that leverages social media sentiment to forecast stock price movements, providing a modern approach to financial analysis.</p>
+<p>We chose four stock entities to focus our analysis on: GameStop (GME), Wingstop (WING), Nvidia (NVDA), and Dogecoin (DOGE). GameStop was selected due to it’s short-squeeze in January 2021 which was driven by Reddit. Wingstop and Nvidia were chosen because of their recent growth, which has caused them to become popular topics on social media. Finally, Dogecoin was primarily propelled by social media, as well as endorsements by influential figures such as Elon Musk. This list may seem small compared to the wealth of stock entities, but this is intentional. The primary reason was that we wanted to ensure we were able to collect sufficient social media data given limited resources, as we discuss in the Methods section. Additionally, analysis of how well social media sentiment influences the stock market movement of these entities, if proven consequential, would provide us reason to pursue further research into other entities.</p>
+</section>
+<section id="methods" class="level1">
+<h1>Methods</h1>
+<section id="data-collection" class="level2">
+<h2 class="anchored" data-anchor-id="data-collection">Data Collection</h2>
+<p>The data for this capstone project encompass two main areas: social media and stock market. These data focus on three companies and one cryptocurrency. The companies are GameStop, Wingstop, and Nvidia, which are companies that have experienced recent notable growth or decline that could be reasonably attributed to social media movements. The one cryptocurrency, Dogecoin, has been a focus of X CEO Elon Musk. The goal, as mentioned prior, is to determine if it is possible to predict stock market motion using social media sentiment.</p>
+<p>The stock market data was acquired via Yahoo Finance. This data is easily accessible. We acquired data for each of the organizations and pushed it into our database.</p>
+<p>We used a PostgreSQL database hosted on Railway to store and access our data. This did cost us about $15 over the course of the term, but the tradeoff was worth it for its flexibility and the ability to have our data readily accessible to both of us at any time. We dumped our scraped social media data and stock market data directly into the database using the Python packages SQLAlchemy and psycopg2. We also used these packages to access the most up-to-date data during the data processing and modeling phase.</p>
+<p>For social media data, we focused mainly on X and Reddit. On X, we aimed to scrape an average of 250 posts per topic per day for the designated time period. For Reddit, we scraped posts from the organization’s subreddit, usually named after the company/currency; these subreddits were r/nvidia, r/gamestop, r/wingstop, and r/dogecoin. In the case of GameStop and Nvidia, Reddit also had subreddits dedicated to the stocks themselves – r/GME and r/NVDA_Stock – which we also scraped.</p>
+<section id="twitter-x-web-scraping" class="level3">
+<h3 class="anchored" data-anchor-id="twitter-x-web-scraping">Twitter / X Web Scraping</h3>
+<p>The X web scraper was the more labor-intensive scraper of the two. This is due to a couple of factors. Firstly, since its acquisition by Elon Musk in late 2022, X has imposed strict crackdowns on web scraping through the implementation of rate limits on non-verified accounts. These reading rate limits are reported as 500 posts per day for new accounts, 1,000 posts per day for unverified users, and 10,000 posts for verified accounts <span class="citation" data-cites="reuters">[<a href="#ref-reuters" role="doc-biblioref">2</a>]</span>, though we read well over the 1,000 post limit per day during the scraping phase without hitting a rate wall. Secondly, the X API – through which we would be able to pull the necessary data – is locked behind a paywall of $100 per month <span class="citation" data-cites="xapi">[<a href="#ref-xapi" role="doc-biblioref">3</a>]</span>. The API does have a free level, but this is limited to posting only. This is infeasible for the scope of this project, and thus required us to devise alternate means of collecting the X data.</p>
+<p>The X data was acquired manually through a pair of scrapers: twscrape and a custom Selenium-based webscraper that we built from scratch. The twscrape Python package, written by GitHub user vladkens, works through the authorized X API <span class="citation" data-cites="vladkens">[<a href="#ref-vladkens" role="doc-biblioref">4</a>]</span>. We created around 10 accounts that we gave to twscrape, and it was able to acquire a large amount of data very quickly. The drawback of this is that the accounts it used were quickly rate-limited if not outright banned, requiring the constant creation of new accounts. Due to resource constraints, we opted for the slower but more reliable Selenium-based scraper.</p>
+<p>Our Selenium-based scraper was designed bespoke for X. In order to avoid hitting the X rate limits, we took a single thread approach, rotating through the 5 X accounts that were not banned during the twscrape scraper phase. During our scraping period, we were fortunate to not encounter any changes to website structure, allowing the scraper to run reliably for long periods of time. Cycling through different accounts also allowed us to avoid running up against X’s rate limits for the most part. For the newer accounts, we did encounter bot deterrents in the form of orbit-matching authentication tests. These often occurred when running the scraper from different internet connections. Though there may be some method to circumvent this measure, we used human intervention and stepped into to solve these when they appeared.</p>
+</section>
+<section id="reddit-web-scraping" class="level3">
+<h3 class="anchored" data-anchor-id="reddit-web-scraping">Reddit Web Scraping</h3>
+<p>For the Reddit scraper, we had to get access to the developer API, which is free to access with a valid Reddit account. Once we had access, we used the PRAW (Python Reddit API Wrapper) package to pull submissions from the above-mentioned subreddits. A limitation of the Reddit API is that Reddit does not allow date filtering in the same way X does. On the other hand, the amount of metadata that can be accessed about each submission is vast. One of these pieces of metadata is date of posting, stored as a UTC string. We were able to pull many new and top posts that fell within a given UTC time range. The limitation on date filtering meant we were unable to pull all of the posts for the date range, but we were still able to scrape a fair number of posts from the subreddits for our analysis.</p>
+</section>
+<section id="ethical-considerations" class="level3">
+<h3 class="anchored" data-anchor-id="ethical-considerations">Ethical Considerations</h3>
+<p>Many website developers implement rate limits for their users accessing their site through the main interface or through API endpoints. Reddit and X have rate limits implemented for their APIs as well as users just accessing the site for everyday use. As part of our web scraping effort, we wanted to ensure that we respected the rate limits as much as possible while still being able to collect the data we needed for our analysis. For the Reddit API, the free tier is limited to 100 queries per minute, which we did not come close to exceeding at only 6 queries in total. The X rate limit is a bit more complicated. Running our Selenium scraper on a single account for several queries in a row caused it to hit the rate limit after about 4 to 5 searches. However, by rotating the accounts, we gave enough of a “cool down” period to each account to make sure that rate limit was never exceeded. Additionally, we took a single-thread approach to web scraping, only allowing one iteration of it to run at any given time. This was considerably slower, but ensured we were able to scrape without putting undue strain on the website.</p>
+<p>Because social media post data are intrinsically tied to the individuals who produced them, we wanted to make sure the data was as anonymized as possible. Thus, we did not collect any user data, and limited our relevant to data to information we could gather from the posts themselves: the date of posting, the content of the post, and the number of likes (for X) or net post score (for Reddit). Doing this alleviates any privacy concerns that may arise.</p>
+</section>
+</section>
+<section id="sentiment-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="sentiment-analysis">Sentiment Analysis</h2>
+<p>The next phase in the project is sentiment analysis. In order to perform the sentiment analysis on social media text data, we used the Python package vaderSentiment, authored by C.J. Hutto and E.E. Gilbert <span class="citation" data-cites="hutto">[<a href="#ref-hutto" role="doc-biblioref">5</a>]</span>. This package uses VADER (Valence Aware Dictionary and sEntiment Reasoner), a natural language processing tool specifically designed to work well with calculating a sentiment score from social media data, making it apt for this application. Before running our posts through the sentiment analyzer, we first cleaned the data by removing URLs, duplicates, and punctuation. We also converted all of the text into lowercase. We used the SentimentIntensityAnalyzer classifier from the vaderSentiment package to perform the sentiment analysis. Using the VADER model, we found the sentiment score for each individual post and averaged the sentiment scores for each day for each of the four topics of interest. This was done using a simple average, though we did experiment with using a weighted average on likes. This, however, did not result in significant model improvements.</p>
+</section>
+<section id="modeling" class="level2">
+<h2 class="anchored" data-anchor-id="modeling">Modeling</h2>
+<p>The goal of this project was to build a forecasting model for stock closing price movement based on average daily sentiment. Before starting to model, we compared the average sentiment with “close” to determine if there was a significant Pearson’s correlation between the sentiment scores and the measured closing prices. This was to give us an idea of the relationship between our variables of interest, though it did not affect our modeling approaches.</p>
+<p>For our model construction, we used the singular feature of average sentiment with a response variable called “change” which could take one of two values: “up” or “down”. Each row is assigned a change value based on the following day’s closing price. If the next row’s closing price is greater than the current row’s, the current row will be assigned “up”. It would be assigned “down” if the reverse occurred. In the case that the closing price did not change from one day to the next, it was assigned the value “noChange”, which we ignored in our logistic regression to make the response binary.</p>
+<p>We added additional rows for the changes in following days; change2nd, change3rd, change4th, and change5th. For example, the change2nd column value in a given row would denote the change between the following day and the day after that, the “change from the 2nd day to the 3rd day.” This same idea applies to the rest of the change columns. We added these columns in as additional avenues for modeling.</p>
+<section id="logistic-regression" class="level3">
+<h3 class="anchored" data-anchor-id="logistic-regression">Logistic Regression</h3>
+<p>To perform our logistic regression, we used Python’s scikit-learn package. We performed primarily univariate logistic regression, focusing on the average sentiment score as our feature and the change columns as our responses. We built separate models for each of the change columns using the average sentiment. Our data were split into a 80/20 train/test split, with the predicted accuracy gauged against the test response values. The metrics for performance we used was accuracy.</p>
+<p>We developed logistic regression models for each of the four stock entities, as well as a model that used all of the four datasets together, which we called our “general” model. The results of these models can be found in the Data section of this document.</p>
+</section>
+<section id="decision-trees" class="level3">
+<h3 class="anchored" data-anchor-id="decision-trees">Decision Trees</h3>
+<p>We wanted to build a few models to determine the most predictive system. Another model we built involved decision trees. For these models, we use scikit-learn’s DecisionTreeClassifier classifier. Again, these trees used a single feature (the average sentiment) and an individual response variable (the change) for each model. As before, these models were built with an 80/20 train/test split. The max depth of each tree was held at 3 layers, as we found this to result in the highest accuracy across the board. As in logistic regression, we used accuracy, precision, recall, and f1-score as our primary metrics of performance.</p>
+<p>As with logistic regression, we built individual models for each of the four organizations for each of the change columns, as well as a general model consisting of all of the data. One notable difference between the decision tree model and the logistic regression model is the inclusion of the “noChange” response. There were very few instances of this variable occurring, and ultimately its inclusion in the dataset made little change. The ultimate goal of this work was to find which model was better. We used a McNemar test to determine which of these two models performed better.</p>
+<p>In the next secion, we will discuss our database and the data we collected.</p>
+</section>
+</section>
+</section>
+<section id="data" class="level1">
+<h1>Data</h1>
+<p>We chose to host our data in a web-based PostgreSQL database on Railway. This was the easiest way for both of us to have continuous access to the latest data as the web scrapers, detailed in the data section, pulled current and historical data. Our database consists of 5 main tables: 4 tables corresponding to each of the 4 stocks of focus – wing (Winstop), gme (GameStop), nvda (Nvidia), and dogecoin – and 1 table containing all of our posts. The schema of the database is shown below.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="schema.png" class="img-fluid figure-img"></p>
+<figcaption>A schema of our Railway database containing financial information tables and the social media posts table.</figcaption>
+</figure>
+</div>
+<p>The 4 stock tables each consist of 6 common columns:</p>
+<ul>
+<li><p>date: the trading day. This is the primary key of this table.</p></li>
+<li><p>open: the price of the stock at the start of the trading day in the morning.</p></li>
+<li><p>high: the highest price of the stock during the trading day.</p></li>
+<li><p>low: the lowest price of the stock during the trading day.</p></li>
+<li><p>close: the price of the stock at the end of the trading day in the afternoon.</p></li>
+<li><p>volume: the total number of stocks traded (either bought or sold) during the trading day.</p></li>
+</ul>
+<p>The nvda, wing, and gme tables include adj_close (adjusted close), which is the price of the stock at the end of the trading day after adjusting for actions that would affect the stock’s price, such as splits, reverse splits, and dividends. Instead of adj_close, the dogecoin table includes the column market_cap (market capitalization), which is the total market value of all of a company’s outstanding stock shares.</p>
+<p>The posts table has 8 columns, though we found that only a few were relevant to our analysis. The columns were:</p>
+<ul>
+<li><p>post_id: a serial value that assigns a number to each inserted post. This is the primary key of this table.</p></li>
+<li><p>platform: the social media platform the post is scraped from (either Twitter/X or Reddit).</p></li>
+<li><p>topic: the company of interest.</p></li>
+<li><p>post: the content of the post, excluding any attached media.</p></li>
+<li><p>likes: the number of likes (in the case of Twitter/X) or the net score (for Reddit) of the posts.</p></li>
+<li><p>date_posted: the date the post was posted.</p></li>
+<li><p>sub_id: for Reddit posts, the unique id identifying a submission.</p></li>
+<li><p>subreddit: for Reddit posts, the subreddit the posts were pulled from.</p></li>
+</ul>
+<p>For our sentiment analysis and modeling, we only used the topic, post, likes, and date_posted columns.</p>
+<p>The social media and stock market tables were joined on the date in order to facilitate the easy comparison of aggregated sentiment scores to the stock market trading day.</p>
+<p>In the end, we had the following totals for each stock entity:</p>
+<ul>
+<li><p>GameStop: 105,573 posts (Jan 2020 - Jan 2021)</p></li>
+<li><p>Nvidia: 201,577 posts (Jan 2022 - Aug 2024)</p></li>
+<li><p>Wingstop: 122,422 posts (Jan 2022 - Aug 2024)</p></li>
+<li><p>Dogecoin: 236,641 posts (Nov 2021 - Jan 2023)</p></li>
+</ul>
+<p>The stock market data was easily accessible from Yahoo Finance. We were able to get data detailing the stock market motion for each of the four aforementioned organizations. These data were linked to the social media data based on the date of posting. It is important to acknowledge that fluctuations in the stock market can be measured on the level of hours, if not minutes, but for the purpose of our analysis we limited our resolution to the level of the day. Future work can be done with higher resolution, though this would likely require access to APIs.</p>
+</section>
+<section id="results" class="level1">
+<h1>Results</h1>
+<p>We analyzed the relationship between social media sentiment and stock market movements, focusing on financial data from Yahoo Finance and tweets related to companies like Nvidia, Wingstop, Dogecoin, and GameStop. The analysis involved fetching tweets, performing sentiment analysis, and correlating the sentiment scores with stock prices.</p>
+<section id="sentiment-analysis-1" class="level2">
+<h2 class="anchored" data-anchor-id="sentiment-analysis-1">Sentiment Analysis</h2>
+<p>The sentiment scores were calculated for each tweet. We experimented with weighted averages based on likes, but we found this to not significantly affect our models, so we decided on a simple average. The distribution of sentiment scores for each entity can be seen below.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="companydist.png" class="img-fluid figure-img"></p>
+<figcaption>A distribution of post sentiment scores for each of the four stock entities.</figcaption>
+</figure>
+</div>
+<p>Overall, we found that an overwhelming majority of posts were neutral or very close to it for all four entities. We did see a bit of difference: Dogecoin exhibited more positive sentiment than negative, likely due to its promotion by prominent social media figures. Nvidia also had more positive sentiment posts than negative. This can be attributed to the large number of advertisements for Nvidia products on X. GameStop and Wingstop were more even. A more thorough investigation revealed that some of their negative posts were misattributed. For instance, the X post “I want Wingstop so bad” was classified as negative with a score of -0.5413 despite clearly having a positive sentiment. We removed this post from our further analysis, but there are likely more posts for all of the entities that have unrepresentative sentiment scores. However, when averaging the scores by date and entity, we found that the results showed relative stability.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="avgdailysent.png" class="img-fluid figure-img"></p>
+<figcaption>A line chart displaying average sentiment over time for each stock entity.</figcaption>
+</figure>
+</div>
+<p>The above chart shows the average sentiment score for each entity plotted over their respective collection periods. With few exceptions, the average sentiment score of each company remained relatively stable between 0 and 0.25. There are some instances where there is a noticeable drop or rise, but overall the trend was quite constant. We proceeded with the analysis with this in mind.</p>
+</section>
+<section id="correlation-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="correlation-analysis">Correlation Analysis</h2>
+<p>We computed the correlation between daily aggregated sentiment scores and daily stock prices for each company. The results showed varying degrees of correlation, as shown in the scatterplots below.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="corrplots.png" class="img-fluid figure-img"></p>
+<figcaption>A series of scatterplots showing the closing stock price vs the average sentiment score. Also shown are the lines of best fit based off these data.</figcaption>
+</figure>
+</div>
+<p><strong>Nvidia (NVDA)</strong>: There was a moderate positive correlation of 0.22 between sentiment scores and stock prices, indicating that positive social media sentiment can be generally correlated with an increase in stock prices.</p>
+<p><strong>Wingstop (WING)</strong>: The analysis revealed a weak negative correlation of -0.11, suggesting that Wingstop’s stock price movements may be less influenced by social media sentiment compared to Nvidia.</p>
+<p><strong>Dogecoin</strong>: The sentiment scores for Dogecoin showed a moderate negative correlation of -0.33 with its market price, reflecting possible high sensitivity of cryptocurrency prices to social media trends.</p>
+<p><strong>GameStop (GME)</strong>: GameStop’s stock prices exhibited a weak positive correlation of 0.17 with social media sentiment, indicating a potential degree of influence by online communities, particularly during periods of high market volatility and public interest.</p>
+<p>The findings suggest that social media sentiment can be an indicator for predicting stock market movements, especially for companies and assets that are highly discussed and influenced by online communities. The strength of the correlation varies among different companies, with tech stocks and cryptocurrencies showing stronger relationships. This analysis highlights the potential of integrating social media sentiment analysis into financial models to enhance stock price prediction accuracy. With this in mind, we can move on to our models</p>
+</section>
+<section id="logistic-regression-model" class="level2">
+<h2 class="anchored" data-anchor-id="logistic-regression-model">Logistic Regression Model</h2>
+<p>We gauged the aptitudes of these models using accuracy. We fit a logistic model to each entity as well as a “general” model which used all of the data. The results are shown below.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="logplot.png" class="img-fluid figure-img"></p>
+<figcaption>A bar chart displaying the accuracies of our logistic regression model with a dashed line displaying the 50% threshold.</figcaption>
+</figure>
+</div>
+<p>Generally, Wingstop and Nvidia tended to perform the best, reaching their maximums on the 4th day prediction. GameStop and Dogecoin showed some volatility. GameStop consistently performed worse than a coin toss, only crossing the 50% threshold on the 2nd day. Dogecoin showed the most variability with almost a 20% difference from the lowest to highest accuracy predictions. As a result of this dichotomy, the general model stayed relatively consistent, sitting at above 50% for each of the 5 predictions, better than a coin toss.</p>
+<p>A note about the logistic regression model is that it tended to produce models that were uniform in their predictions; that is, it would either predict entirely “up” or entirely “down” responses based on the majority of movements in the dataset.</p>
+</section>
+<section id="decision-tree-model" class="level2">
+<h2 class="anchored" data-anchor-id="decision-tree-model">Decision Tree Model</h2>
+<p>We also utilized a decision tree model for comparison. We used a max depth of 3 nodes for all of the entities. Results can be seen below.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="treeplot.png" class="img-fluid figure-img"></p>
+<figcaption>Another bar chart displaying the accuracies for each entity grouped by the day. Again, we display a 50% line as a threshold comparison.</figcaption>
+</figure>
+</div>
+<p>We can see results similar to our logistic regression. Wingstop and Nvidia consistently score among the highest of the entities, with Wingstop coming in at almost 70% on the 4th day. Both of these entities tended to have the highest accuracy on this day, indicating a delayed response to social media sentiment.</p>
+<p>Dogecoin and GameStop again display results that oscillate around the 50% threshold. As with logistic regression, Dogecoin’s model tends to perform best on the 1st day and the 5th day. GameStop’s model comparison shows deviation from the logistic model, with the decision tree model prevailing on the 1st and 4th day, where the logistic regression had the best predictions on the 2nd and 3rd days. Due to the univariate model, the complexity of the decision tree model is likely capturing nuance the logistic model missed.</p>
+<p>The general model for the decision tree again displays stability near or above the 50% line with a maximum accuracy on the first day at 55%.</p>
+</section>
+<section id="model-comparison" class="level2">
+<h2 class="anchored" data-anchor-id="model-comparison">Model Comparison</h2>
+<p>Our ultimate goal is to build a general model that can predict social media movements with some degree of accuracy. Below is a direct comparison of the general models from the logistic regression and decision tree models.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="genplot.png" class="img-fluid figure-img"></p>
+<figcaption>A bar chart showing the accuracies of the two machine learning models.</figcaption>
+</figure>
+</div>
+<p>In general, it is pretty straightforward to see the similarity between these models. The decision tree model outperforms the logistic regression model during the first three days, but this relationship switches on the 4th and 5th days. These differences are small though, ranging from 1 to 5%. In order to determine the results of these models were statistically significant, we ran a McNemar test. We found that all of these models except for the 2nd day model were significantly different from each other with p-values much less than 0.</p>
+</section>
+</section>
+<section id="conclusions" class="level1">
+<h1>Conclusions</h1>
+<p>The analysis revealed that average daily sentiment is moderately predictive of daily stock price changes for the entities studied. The entities that performed best individually were Nvidia and Wingstop, indicating a potential strong relationship between the average daily sentiment and their stock price motions. It is important to note that the scraping periods for these entities was the most recent, ranging from the beginning of 2022 to the current day, which suggests a rising relevance of social media in predicting stock trends.</p>
+<p>The decision tree model proved to be more effective in predicting stock price movements in the immediate days following sentiment measurement. In contrast, logistic regression demonstrated stronger predictive power when forecasting stock movements 4 to 5 days out from the date of interest.</p>
+<p>These findings suggest that while sentiment analysis can serve as a valuable tool for short-term stock market predictions, the choice of model is crucial depending on the forecasting horizon.</p>
+<p>To further enhance the practical application of these insights, we developed an R Shiny app to visualize our results. The app features a drop-down menu that allows users to select an entity of interest. After selecting an entity and choosing a date, the app displays a line graph of the closing stock price for that specific date and provides a forecast of the stock price for the following day and four days thereafter. This tool offers an accessible way to leverage sentiment analysis in making informed decisions about stock market movements.</p>
+<p>These findings, combined with the R Shiny app, provide a comprehensive approach to predicting stock market movements based on social media sentiment, highlighting the importance of model selection depending on the forecasting horizon.</p>
+<p>Our dashboard can be found <a href="https://tpgomez.shinyapps.io/dashboard/">here.</a></p>
+<section id="future-work" class="level2">
+<h2 class="anchored" data-anchor-id="future-work">Future Work</h2>
+<p>To further enhance our research, several improvements and extensions can be performed. First, we can aim for better time resolution by analyzing data on an hourly basis rather than daily, which could provide more insights into the relationship between sentiment and stock price movements. Expanding the dataset to include a wider range of stock entities could also offer a broader and deeper understanding of how sentiment impacts various sectors of the market. It would also allow us to draw more generalizable results, as only 4 entities may not be a representative sample.</p>
+<p>Additionally, incorporating broader market factors, such as macroeconomic indicators, geopolitical events, and industry-specific news would allow for a more comprehensive analysis, recognizing that the stock market is influenced by multiple interconnected factors. Finally, we can work towards developing an enhanced dashboard with live, hourly data updates, which would provide real-time predictive insights and improve the practical utility of our models for traders and investors.</p>
+
+
+
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" role="list">
+<div id="ref-financialtimes" class="csl-entry" role="listitem">
+<div class="csl-left-margin">1. </div><div class="csl-right-inline">Contributor G (2023) The role of sentiment analysis in predicting stock market movements. <a href="https://www.financialexpress.com/money/the-role-of-sentiment-analysis-in-predicting-stock-market-movements-3162828/">https://www.financialexpress.com/money/the-role-of-sentiment-analysis-in-predicting-stock-market-movements-3162828/</a></div>
+</div>
+<div id="ref-reuters" class="csl-entry" role="listitem">
+<div class="csl-left-margin">2. </div><div class="csl-right-inline">Reuters (2023) What does twitter ’rate limit exceeded’ mean for users? <a href="https://www.reuters.com/technology/what-does-twitter-rate-limit-exceeded-mean-users-2023-07-03/">https://www.reuters.com/technology/what-does-twitter-rate-limit-exceeded-mean-users-2023-07-03/</a></div>
+</div>
+<div id="ref-xapi" class="csl-entry" role="listitem">
+<div class="csl-left-margin">3. </div><div class="csl-right-inline">X API. <a href="https://developer.x.com/en/docs/twitter-api">https://developer.x.com/en/docs/twitter-api</a></div>
+</div>
+<div id="ref-vladkens" class="csl-entry" role="listitem">
+<div class="csl-left-margin">4. </div><div class="csl-right-inline">vladkens (2023) How to still scrape millions of tweets in 2023 using twscrape. <a href="https://medium.com/@vladkens/how-to-still-scrape-millions-of-tweets-in-2023-using-twscrape-97f5d3881434">https://medium.com/@vladkens/how-to-still-scrape-millions-of-tweets-in-2023-using-twscrape-97f5d3881434</a></div>
+</div>
+<div id="ref-hutto" class="csl-entry" role="listitem">
+<div class="csl-left-margin">5. </div><div class="csl-right-inline">C. J. Hutto EEG VADER: A parsimonious rule-based model for sentiment analysis of social media text</div>
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
