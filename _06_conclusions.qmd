@@ -1,0 +1,19 @@
+# Conclusions
+
+The analysis revealed that average daily sentiment is moderately predictive of daily stock price changes for the entities studied. The entities that performed best individually were Nvidia and Wingstop, indicating a potential strong relationship between the average daily sentiment and their stock price motions. It is important to note that the scraping periods for these entities was the most recent, ranging from the beginning of 2022 to the current day, which suggests a rising relevance of social media in predicting stock trends.
+
+The decision tree model proved to be more effective in predicting stock price movements in the immediate days following sentiment measurement. In contrast, logistic regression demonstrated stronger predictive power when forecasting stock movements 4 to 5 days out from the date of interest.
+
+These findings suggest that while sentiment analysis can serve as a valuable tool for short-term stock market predictions, the choice of model is crucial depending on the forecasting horizon. 
+
+To further enhance the practical application of these insights, we developed an R Shiny app to visualize our results. The app features a drop-down menu that allows users to select an entity of interest. After selecting an entity and choosing a date, the app displays a line graph of the closing stock price for that specific date and provides a forecast of the stock price for the following day and four days thereafter. This tool offers an accessible way to leverage sentiment analysis in making informed decisions about stock market movements.
+
+These findings, combined with the R Shiny app, provide a comprehensive approach to predicting stock market movements based on social media sentiment, highlighting the importance of model selection depending on the forecasting horizon.
+
+Our dashboard can be found [here.](https://tpgomez.shinyapps.io/dashboard/)
+
+## Future Work
+
+To further enhance our research, several improvements and extensions can be performed. First, we can aim for better time resolution by analyzing data on an hourly basis rather than daily, which could provide more insights into the relationship between sentiment and stock price movements. Expanding the dataset to include a wider range of stock entities could also offer a broader and deeper understanding of how sentiment impacts various sectors of the market. It would also allow us to draw more generalizable results, as only 4 entities may not be a representative sample.
+
+Additionally, incorporating broader market factors, such as macroeconomic indicators, geopolitical events, and industry-specific news would allow for a more comprehensive analysis, recognizing that the stock market is influenced by multiple interconnected factors. Finally, we can work towards developing an enhanced dashboard with live, hourly data updates, which would provide real-time predictive insights and improve the practical utility of our models for traders and investors.

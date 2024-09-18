@@ -1,0 +1,22 @@
+---
+title: Predicting Stock Market Movements through Social Media Sentiment Analysis
+subtitle: A Data-Driven Approach to Understanding Public Perception and Financial Markets
+bibliography: references.bib
+csl: diabetologia.csl
+authors:
+  - Aryan Bhardwaj
+  - Tyler Gomez Riddick
+title-block-banner: true
+format: 
+  html:
+    theme:
+      light: lightly
+      dark: darkly
+---
+
+{{< include _01_intro.qmd >}}
+{{< include _02_background.qmd >}}
+{{< include _03_methods.qmd >}}
+{{< include _04_data.qmd >}}
+{{< include _05_results.qmd >}}
+{{< include _06_conclusions.qmd >}}

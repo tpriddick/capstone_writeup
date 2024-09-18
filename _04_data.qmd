@@ -1,0 +1,55 @@
+# Data
+
+We chose to host our data in a web-based PostgreSQL database on Railway. This was the easiest way for both of us to have continuous access to the latest data as the web scrapers, detailed in the data section, pulled current and historical data. Our database consists of 5 main tables: 4 tables corresponding to each of the 4 stocks of focus -- wing (Winstop), gme (GameStop), nvda (Nvidia), and dogecoin -- and 1 table containing all of our posts. The schema of the database is shown below.
+
+![A schema of our Railway database containing financial information tables and the social media posts table.](schema.png)
+
+The 4 stock tables each consist of 6 common columns:
+
+- date: the trading day. This is the primary key of this table.
+
+- open: the price of the stock at the start of the trading day in the morning.
+
+- high: the highest price of the stock during the trading day.
+
+- low: the lowest price of the stock during the trading day.
+
+- close: the price of the stock at the end of the trading day in the afternoon.
+
+- volume: the total number of stocks traded (either bought or sold) during the trading day.
+
+The nvda, wing, and gme tables include adj_close (adjusted close), which is the price of the stock at the end of the trading day after adjusting for actions that would affect the stock's price, such as splits, reverse splits, and dividends. Instead of adj_close, the dogecoin table includes the column market_cap (market capitalization), which is the total market value of all of a company's outstanding stock shares.
+
+The posts table has 8 columns, though we found that only a few were relevant to our analysis. The columns were:
+
+- post_id: a serial value that assigns a number to each inserted post. This is the primary key of this table.
+
+- platform: the social media platform the post is scraped from (either Twitter/X or Reddit).
+
+- topic: the company of interest.
+
+- post: the content of the post, excluding any attached media.
+
+- likes: the number of likes (in the case of Twitter/X) or the net score (for Reddit) of the posts.
+
+- date_posted: the date the post was posted.
+
+- sub_id: for Reddit posts, the unique id identifying a submission.
+
+- subreddit: for Reddit posts, the subreddit the posts were pulled from.
+
+For our sentiment analysis and modeling, we only used the topic, post, likes, and date_posted columns.
+
+The social media and stock market tables were joined on the date in order to facilitate the easy comparison of aggregated sentiment scores to the stock market trading day.
+
+In the end, we had the following totals for each stock entity:
+
+- GameStop: 105,573 posts (Jan 2020 - Jan 2021)
+
+- Nvidia: 201,577 posts (Jan 2022 - Aug 2024)
+
+- Wingstop: 122,422 posts (Jan 2022 - Aug 2024)
+
+- Dogecoin: 236,641 posts (Nov 2021 - Jan 2023)
+
+The stock market data was easily accessible from Yahoo Finance. We were able to get data detailing the stock market motion for each of the four aforementioned organizations. These data were linked to the social media data based on the date of posting. It is important to acknowledge that fluctuations in the stock market can be measured on the level of hours, if not minutes, but for the purpose of our analysis we limited our resolution to the level of the day. Future work can be done with higher resolution, though this would likely require access to APIs.

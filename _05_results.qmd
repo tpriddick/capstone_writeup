@@ -1,0 +1,60 @@
+# Results
+We analyzed the relationship between social media sentiment and stock market movements, focusing on financial data from Yahoo Finance and tweets related to companies like Nvidia, Wingstop, Dogecoin, and GameStop. The analysis involved fetching tweets, performing sentiment analysis, and correlating the sentiment scores with stock prices.
+
+## Sentiment Analysis
+
+The sentiment scores were calculated for each tweet. We experimented with weighted averages based on likes, but we found this to not significantly affect our models, so we decided on a simple average. The distribution of sentiment scores for each entity can be seen below.
+
+![A distribution of post sentiment scores for each of the four stock entities.](companydist.png)
+
+Overall, we found that an overwhelming majority of posts were neutral or very close to it for all four entities. We did see a bit of difference: Dogecoin exhibited more positive sentiment than negative, likely due to its promotion by prominent social media figures. Nvidia also had more positive sentiment posts than negative. This can be attributed to the large number of advertisements for Nvidia products on X. GameStop and Wingstop were more even. A more thorough investigation revealed that some of their negative posts were misattributed. For instance, the X post "I want Wingstop so bad" was classified as negative with a score of -0.5413 despite clearly having a positive sentiment. We removed this post from our further analysis, but there are likely more posts for all of the entities that have unrepresentative sentiment scores. However, when averaging the scores by date and entity, we found that the results showed relative stability.
+
+![A line chart displaying average sentiment over time for each stock entity.](avgdailysent.png)
+
+The above chart shows the average sentiment score for each entity plotted over their respective collection periods. With few exceptions, the average sentiment score of each company remained relatively stable between 0 and 0.25. There are some instances where there is a noticeable drop or rise, but overall the trend was quite constant. We proceeded with the analysis with this in mind.
+
+## Correlation Analysis
+
+We computed the correlation between daily aggregated sentiment scores and daily stock prices for each company. The results showed varying degrees of correlation, as shown in the scatterplots below.
+
+![A series of scatterplots showing the closing stock price vs the average sentiment score. Also shown are the lines of best fit based off these data.](corrplots.png)
+
+**Nvidia (NVDA)**: There was a moderate positive correlation of 0.22 between sentiment scores and stock prices, indicating that positive social media sentiment can be generally correlated with an increase in stock prices.
+
+**Wingstop (WING)**: The analysis revealed a weak negative correlation of -0.11, suggesting that Wingstop's stock price movements may be less influenced by social media sentiment compared to Nvidia.
+
+**Dogecoin**: The sentiment scores for Dogecoin showed a moderate negative correlation of -0.33 with its market price, reflecting possible high sensitivity of cryptocurrency prices to social media trends.
+
+**GameStop (GME)**: GameStop's stock prices exhibited a weak positive correlation of 0.17 with social media sentiment, indicating a potential degree of influence by online communities, particularly during periods of high market volatility and public interest.
+
+The findings suggest that social media sentiment can be an indicator for predicting stock market movements, especially for companies and assets that are highly discussed and influenced by online communities. The strength of the correlation varies among different companies, with tech stocks and cryptocurrencies showing stronger relationships. This analysis highlights the potential of integrating social media sentiment analysis into financial models to enhance stock price prediction accuracy. With this in mind, we can move on to our models
+
+## Logistic Regression Model
+
+We gauged the aptitudes of these models using accuracy. We fit a logistic model to each entity as well as a "general" model which used all of the data. The results are shown below.
+
+![A bar chart displaying the accuracies of our logistic regression model with a dashed line displaying the 50% threshold.](logplot.png)
+
+Generally, Wingstop and Nvidia tended to perform the best, reaching their maximums on the 4th day prediction. GameStop and Dogecoin showed some volatility. GameStop consistently performed worse than a coin toss, only crossing the 50% threshold on the 2nd day. Dogecoin showed the most variability with almost a 20% difference from the lowest to highest accuracy predictions. As a result of this dichotomy, the general model stayed relatively consistent, sitting at above 50% for each of the 5 predictions, better than a coin toss.
+
+A note about the logistic regression model is that it tended to produce models that were uniform in their predictions; that is, it would either predict entirely "up" or entirely "down" responses based on the majority of movements in the dataset.
+
+## Decision Tree Model
+
+We also utilized a decision tree model for comparison. We used a max depth of 3 nodes for all of the entities. Results can be seen below.
+
+![Another bar chart displaying the accuracies for each entity grouped by the day. Again, we display a 50% line as a threshold comparison.](treeplot.png)
+
+We can see results similar to our logistic regression. Wingstop and Nvidia consistently score among the highest of the entities, with Wingstop coming in at almost 70% on the 4th day. Both of these entities tended to have the highest accuracy on this day, indicating a delayed response to social media sentiment. 
+
+Dogecoin and GameStop again display results that oscillate around the 50% threshold. As with logistic regression, Dogecoin's model tends to perform best on the 1st day and the 5th day. GameStop's model comparison shows deviation from the logistic model, with the decision tree model prevailing on the 1st and 4th day, where the logistic regression had the best predictions on the 2nd and 3rd days. Due to the univariate model, the complexity of the decision tree model is likely capturing nuance the logistic model missed.
+
+The general model for the decision tree again displays stability near or above the 50% line with a maximum accuracy on the first day at 55%. 
+
+## Model Comparison
+
+Our ultimate goal is to build a general model that can predict social media movements with some degree of accuracy. Below is a direct comparison of the general models from the logistic regression and decision tree models.
+
+![A bar chart showing the accuracies of the two machine learning models.](genplot.png)
+
+In general, it is pretty straightforward to see the similarity between these models. The decision tree model outperforms the logistic regression model during the first three days, but this relationship switches on the 4th and 5th days. These differences are small though, ranging from 1 to 5%. In order to determine the results of these models were statistically significant, we ran a McNemar test. We found that all of these models except for the 2nd day model were significantly different from each other with p-values much less than 0.  
