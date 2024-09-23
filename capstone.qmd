@@ -4,8 +4,8 @@ subtitle: A Data-Driven Approach to Understanding Public Perception and Financia
 bibliography: references.bib
 csl: diabetologia.csl
 authors:
-  - Aryan Bhardwaj
   - Tyler Gomez Riddick
+  - Aryan Bhardwaj
 title-block-banner: true
 format: 
   html:
